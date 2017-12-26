@@ -1,7 +1,15 @@
 #!/bin/bash
 cd /home/pi/freebox
+
+# Freebox Server Authentification
+MY_APP_ID="Domoticz.app"
+MY_APP_TOKEN="INSCRIRE_LE_TOKEN_ICI"
+
 # Domoticz server
 DOMOTICZ_SERVER="192.168.1.145:8080"
+DOMOTICZ_USER="admin"
+DOMOTICZ_PWD="password"
+
 # Freebox Server idx
 FREEBOX_FW_IDX="6"
 FREEBOX_UPTIME_IDX="5"
@@ -15,8 +23,8 @@ FREEBOX_REC_EN_COURS_IDX="61"
 FREEBOX_EMIS_EN_COURS_IDX="60"
 FREEBOX_BANDWIDTH_DOWN_IDX="63"
 FREEBOX_BANDWIDTH_UP_IDX="62"
-# Password admin domoticz à modifier (inutile ?)
-pwd=toto
+
+
 #
 function show_time () {
     num=$1
@@ -44,8 +52,6 @@ function show_time () {
     echo "$day"%20jours%20"$hour"%20heures%20"$min"%20mn%20"$sec"%20secs
 }
 
-MY_APP_ID="Domoticz.app"
-MY_APP_TOKEN="INSCRIRE_LE_TOKEN_ICI"
 
 # source the freeboxos-bash-api
 source ./freeboxos_bash_api.sh
@@ -117,15 +123,15 @@ modele=$(get_json_value_for_key "$answer" 'result.model')
 #
 #Envoi des valeurs vers les devices virtuels
 # Send data to Domoticz
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_FW_IDX&nvalue=0&svalue=$fwfreebox"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_UPTIME_IDX&nvalue=0&svalue=$uptimefreebox"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_ATM_UP_IDX&nvalue=0&svalue=$atm_up_rate"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_ATM_DOWN_IDX&nvalue=0&svalue=$atm_down_rate"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_DISKSPACE_IDX&nvalue=0&svalue=$freediskspace"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_SERIAL_IDX&nvalue=0&svalue=$num_serie"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_MODELE_IDX&nvalue=0&svalue=$modele"
-#curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_TEMP_CPUB_IDX&nvalue=0&svalue=$temperature_cpub"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_REC_EN_COURS_IDX&nvalue=0&svalue=$debit_reception"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_EMIS_EN_COURS_IDX&nvalue=0&svalue=$debit_emission"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_BANDWIDTH_UP_IDX&nvalue=0&svalue=$bande_passante_maxi_emission"
-curl --silent -s -i -H  "Accept: application/json"  "http://login_password@admin_password@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_BANDWIDTH_DOWN_IDX&nvalue=0&svalue=$bande_passante_maxi_reception"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_FW_IDX&nvalue=0&svalue=$fwfreebox"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_UPTIME_IDX&nvalue=0&svalue=$uptimefreebox"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_ATM_UP_IDX&nvalue=0&svalue=$atm_up_rate"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_ATM_DOWN_IDX&nvalue=0&svalue=$atm_down_rate"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_DISKSPACE_IDX&nvalue=0&svalue=$freediskspace"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_SERIAL_IDX&nvalue=0&svalue=$num_serie"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_MODELE_IDX&nvalue=0&svalue=$modele"
+#curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_TEMP_CPUB_IDX&nvalue=0&svalue=$temperature_cpub"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_REC_EN_COURS_IDX&nvalue=0&svalue=$debit_reception"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_EMIS_EN_COURS_IDX&nvalue=0&svalue=$debit_emission"
+curl --silent -s -i -H  "Accept: application/json"  "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_BANDWIDTH_UP_IDX&nvalue=0&svalue=$bande_passante_maxi_emission"
+curl --silent -s -i -H "Accept: application/json" "http://$DOMOTICZ_USER:$DOMOTICZ_PWD@$DOMOTICZ_SERVER/json.htm?type=command&param=udevice&idx=$FREEBOX_BANDWIDTH_DOWN_IDX&nvalue=0&svalue=$bande_passante_maxi_reception"
